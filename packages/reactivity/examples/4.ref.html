@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="../dist/reactivity.global.js"></script>
+  <script>
+    const { reactive, effect, watch, ref, toRefs, proxyRefs } = VueReactivity
+
+    //ref测试
+    // const state = ref({ flag: true, name: 'zs', age: 20 })
+
+    // effect(() => {
+    //   app.innerHTML = state.value.flag ? state.value.name : state.value.age
+    // })
+
+    // setTimeout(() => {
+    //   state.value.flag = false
+    // }, 1000)
+
+    //toRefs测试
+    // const state = reactive({ flag: true, name: 'zs', age: 20 })
+
+    // let { flag, name, age } = toRefs(state)
+
+    // effect(() => {
+    //   app.innerHTML = flag.value ? name.value : age.value
+    // })
+
+    // setTimeout(() => {
+    //   flag.value = false
+    // }, 1000)
+
+
+    //proxyRefs测试
+    const name = ref('zs')
+    const age = ref(20)
+    const state = proxyRefs({ name, age })
+    effect(() => {
+      app.innerHTML = state.name + state.age
+    })
+    setTimeout(() => {
+      name.value = 'ls'
+    }, 1000)
+  </script>
+</body>
+
+</html>

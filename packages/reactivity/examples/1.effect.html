@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="../dist/reactivity.global.js"></script>
+  <!-- <script src="./reactivity.global.js"></script> -->
+  <script>
+    const { reactive, effect } = VueReactivity
+
+    // effect递归死循环测试
+    // const state = reactive({ name: 'zs' })
+    // effect(() => { //effect可以模拟组件，因为组件就是基于effect实现的
+    //   state.name = 'ls'
+    //   app.innerHTML = state.name
+    // })
+    // state.name = 'ls'
+
+    //effect分支切换测试
+    const state = reactive({ flag: true, name: 'zs', age: 20 })
+    effect(() => { //effect可以模拟组件，因为组件就是基于effect实现的
+      console.log('render')
+      app.innerHTML = state.flag ? state.name : state.age
+    })
+    setTimeout(() => {
+      state.flag = false
+      setTimeout(() => {
+        console.log('修改name')
+        state.name = 'ls'
+      }, 1000)
+    }, 1000)
+
+    //effect stop测试
+    // const state = reactive({ flag: true, name: 'zs', age: 20 })
+    // let runner = effect(() => {
+    //   app.innerHTML = state.name
+    // })
+    // runner.effect.stop()
+    // setTimeout(() => {
+    //   state.name = 'ls'
+    //   setTimeout(() => {
+    //     runner()
+    //   }, 1000)
+    // }, 1000)
+
+    //effect scheduler
+    // let flag = false
+    // const state = reactive({ flag: true, name: 'zs', age: 20 })
+    // let runner = effect(() => {
+    //   app.innerHTML = state.age
+    // }, {
+    //   scheduler() { //组件的异步更新基于scheduler来实现，修改多个数据只更新页面一次
+    //     if (!flag) {
+    //       flag = true
+    //       setTimeout(() => {
+    //         runner()
+    //         flag = false
+    //       })
+    //     }
+    //   }
+    // })
+    // state.age++
+    // state.age++
+    // state.age++
+    // state.age++
+  </script>
+</body>
+
+</html>
